@@ -8,7 +8,9 @@ public class User {
 
     String nickName;
 
-    public User(){}
+    public User(){
+
+    }
     public User(String displayName, String email, String uId, String photoUrl, String[] requestToFriends, String[] friends, String nickName) {
         this.displayName = displayName;
         this.email = email;
