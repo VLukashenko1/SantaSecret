@@ -1,30 +1,39 @@
 package com.vital.santasecret;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.bumptech.glide.Glide;
+import com.vital.santasecret.Model.User;
+import com.vital.santasecret.Model.UserHolder;
 
 public class MainActivity extends AppCompatActivity {
-FirebaseAuth auth =  FirebaseAuth.getInstance();
 TextView userInfo;
+ImageView userPhoto;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        userInfo = findViewById(R.id.textView);
-        showUserInfo();
+        userInfo = findViewById(R.id.userInfo);
+        userPhoto = findViewById(R.id.userPhotoMainPage);
+
+        UserHolder.getInstance().getLiveUser().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                showUserInfo(user);
+            }
+        });
+
     }
 
-    void showUserInfo(){
-        if (auth.getCurrentUser() != null){
-            userInfo.setText(auth.getCurrentUser().getDisplayName() + "\n" + auth.getCurrentUser().getEmail());
-        }
-        else {
-            userInfo.setText("You are not authorized");
-        }
+    void showUserInfo(User user){
+        userInfo.setText("Name: " + user.getDisplayName() + "\nE-mail: " + user.getEmail());
+        Glide.with(MainActivity.this).load(user.getPhotoUrl()).into(userPhoto);
+
     }
 }

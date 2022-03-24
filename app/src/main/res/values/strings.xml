@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">SantaSecret</string>
     <string name="signinbutton">SignInButton</string>
+    <string name="NoData">-</string>
 
 </resources>
