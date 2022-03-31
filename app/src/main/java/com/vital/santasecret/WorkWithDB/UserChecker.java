@@ -4,15 +4,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.vital.santasecret.Model.User;
-import com.vital.santasecret.Model.UserHolder;
+import com.vital.santasecret.Util.UserHolder;
 
-public class UserUpdater {
+public class UserChecker {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     UserHolder uh = UserHolder.getInstance();
 
     DbHelper dbHelper = new DbHelper();
     public void isUserRegister(){
-
         dbHelper.USERS_REF.document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {

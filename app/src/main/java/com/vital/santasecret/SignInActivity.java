@@ -3,7 +3,6 @@ package com.vital.santasecret;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +22,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.vital.santasecret.WorkWithDB.UserUpdater;
+import com.vital.santasecret.WorkWithDB.UserChecker;
 
 public class SignInActivity extends AppCompatActivity {
     private static final String TAG = "GoogleActivity";
@@ -109,8 +108,8 @@ public class SignInActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         if (user != null){
             // Make folder with userData in FirebaseFirestore
-            UserUpdater userUpdater = new UserUpdater();
-            userUpdater.isUserRegister();
+            UserChecker userChecker = new UserChecker();
+            userChecker.isUserRegister();
 
             // show message and change activity
             Intent intent = new Intent(this, MainActivity.class);

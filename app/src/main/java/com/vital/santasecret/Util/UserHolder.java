@@ -1,4 +1,6 @@
-package com.vital.santasecret.Model;
+package com.vital.santasecret.Util;
+
+import com.vital.santasecret.Model.User;
 
 import androidx.lifecycle.MutableLiveData;
 

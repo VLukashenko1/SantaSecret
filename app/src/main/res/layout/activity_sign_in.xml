@@ -29,11 +29,21 @@
         android:layout_marginEnd="69dp"
         android:layout_marginBottom="17dp"
         android:fontFamily="sans-serif-condensed-light"
-        android:text="Login with e-mail"
+        android:text="@string/login_with_e_mail"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/singInButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/secret_santa_for_mainpage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,5 +2,11 @@
     <string name="app_name">SantaSecret</string>
     <string name="signinbutton">SignInButton</string>
     <string name="NoData">-</string>
+    <string name="login_with_e_mail">Login with e-mail</string>
+    <string name="box_making">Box Making</string>
+    <string name="connect_to_box">Connect to box</string>
+    <string name="create_box">Create box</string>
+    <string name="choose_action">Choose an action</string>
+    <string name="go">Go</string>
 
 </resources>
