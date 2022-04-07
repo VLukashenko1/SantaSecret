@@ -32,8 +32,9 @@ public class UserChecker {
 
         uh.getLiveUser().setValue(user);
     }
-    void updateLocalHolder(){
-        dbHelper.USERS_REF.document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+    public void updateLocalHolder(){
+        dbHelper.USERS_REF.document(auth.getCurrentUser().getUid()).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 User user = documentSnapshot.toObject(User.class);

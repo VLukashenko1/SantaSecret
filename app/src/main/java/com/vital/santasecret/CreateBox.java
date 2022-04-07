@@ -52,11 +52,11 @@ public class CreateBox extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i){
-                    case R.id.radioGroupCreateBoxAct:
-                        boxname.setHint("enter box name");
+                    case R.id.radioButtonCreateBox:
+                        boxname.setHint("Enter box name");
                         break;
                     case R.id.radioButtonConnectToBox:
-                        boxname.setHint("enter box id");
+                        boxname.setHint("Enter box id");
                         break;
                 }
             }
@@ -103,7 +103,7 @@ public class CreateBox extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.getData() != null){
-                    if (!documentSnapshot.get(DbHelper.IF_OF_BOX_CREATOR).toString().equals(auth.getCurrentUser().getUid())){
+                    if (!documentSnapshot.get(DbHelper.ID_OF_BOX_CREATOR).toString().equals(auth.getCurrentUser().getUid())){
                         connectToBox(idOfBox);
                     }
                     makeText("This box where created by yourself");

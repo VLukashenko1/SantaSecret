@@ -1,12 +1,14 @@
 package com.vital.santasecret.Model;
 
+import java.util.List;
+
 public class Box {
     String idOfCreator, NameOfBox;
-    String[] listOfUsers;
+    List<String> listOfUsers;
 
-    public Box(String idOfCreator, String nameOfBox, String[] listOfUsers) {
+    public Box(String idOfCreator, String nameOfBox, List<String> listOfUsers) {
         this.idOfCreator = idOfCreator;
-        NameOfBox = nameOfBox;
+        this.NameOfBox = nameOfBox;
         this.listOfUsers = listOfUsers;
     }
     public Box(){}
@@ -27,11 +29,11 @@ public class Box {
         NameOfBox = nameOfBox;
     }
 
-    public String[] getListOfUsers() {
+    public List<String> getListOfUsers() {
         return listOfUsers;
     }
 
-    public void setListOfUsers(String[] listOfUsers) {
+    public void setListOfUsers(List<String> listOfUsers) {
         this.listOfUsers = listOfUsers;
     }
 }
