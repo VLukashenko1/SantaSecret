@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -18,6 +19,8 @@ import com.vital.santasecret.Model.Box;
 import com.vital.santasecret.Model.User;
 import com.vital.santasecret.Util.BoxesHolder;
 import com.vital.santasecret.Util.UserHolder;
+import com.vital.santasecret.Util.UsersHolder;
+import com.vital.santasecret.WorkWithDB.InBoxUsersFinder;
 import com.vital.santasecret.WorkWithDB.UserBoxesFinder;
 
 import java.util.List;
@@ -27,6 +30,8 @@ TextView userInfo;
 ImageView userPhoto;
 ImageButton createBox;
 ListView boxesListView;
+
+    InBoxUsersFinder inBoxUsersFinder = new InBoxUsersFinder();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +53,9 @@ ListView boxesListView;
                 showUserInfo(user);
             }
         });
-//
         boxesFinder();
-
 //
+
     }
 
     void showUserInfo(User user){
@@ -73,6 +77,17 @@ ListView boxesListView;
         ArrayAdapter adapter = new ArrayAdapter(MainActivity.this,
                 android.R.layout.simple_list_item_1, boxNamesList(boxes));
         boxesListView.setAdapter(adapter);
+        boxesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Box box = boxes.get(i);
+                inBoxUsersFinder.getListWithIdOfUsers(box.getIdOfBox());
+                Intent intent = new Intent(MainActivity.this, InBoxActivity.class);
+                intent.putExtra("nameOfBox", box.getNameOfBox());
+                startActivity(intent);
+
+            }
+        });
     }
     String[] boxNamesList(List<Box> boxes){
         String[] boxNamesArray = new String[boxes.size()];
@@ -85,4 +100,5 @@ ListView boxesListView;
     void makeText(String text){
         Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
     }
+
 }

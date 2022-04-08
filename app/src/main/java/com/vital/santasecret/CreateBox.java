@@ -15,10 +15,15 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.SetOptions;
 import com.vital.santasecret.Model.Box;
 import com.vital.santasecret.WorkWithDB.DbHelper;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 public class CreateBox extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -85,8 +90,15 @@ public class CreateBox extends AppCompatActivity {
             makeText("Enter name of box");
             return;
         }
-        Box box = new Box(auth.getCurrentUser().getUid(), name, null);
-        dbHelper.BOXES_REF.add(box);
+        Box box = new Box(auth.getCurrentUser().getUid(), name, null, null);
+        dbHelper.BOXES_REF.add(box).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                HashMap<String, String> id = new HashMap<>();
+                id.put("idOfBox", documentReference.getId());
+                dbHelper.BOXES_REF.document(documentReference.getId()).set(id, SetOptions.merge());
+            }
+        });
         makeText("Box created");
         changeActivity();
     }

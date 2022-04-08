@@ -8,5 +8,6 @@
     <string name="create_box">Create box</string>
     <string name="choose_action">Choose an action</string>
     <string name="go">Go</string>
+    <string name="garland_on_inboxactivity">garland on inBoxActivity</string>
 
 </resources>
