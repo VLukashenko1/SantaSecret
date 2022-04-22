@@ -8,27 +8,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.vital.santasecret.Model.Box;
 import com.vital.santasecret.Model.User;
 import com.vital.santasecret.Util.BoxesHolder;
 import com.vital.santasecret.Util.UserHolder;
-import com.vital.santasecret.Util.UsersHolder;
 import com.vital.santasecret.WorkWithDB.InBoxUsersFinder;
 import com.vital.santasecret.WorkWithDB.UserBoxesFinder;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-TextView userInfo;
-ImageView userPhoto;
-ImageButton createBox;
+Button createBox, friendsButton;
 ListView boxesListView;
 
     InBoxUsersFinder inBoxUsersFinder = new InBoxUsersFinder();
@@ -38,12 +32,10 @@ ListView boxesListView;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        userInfo = findViewById(R.id.userInfo);
-        userPhoto = findViewById(R.id.userPhotoMainPage);
-
-        createBox = findViewById(R.id.plusButtonMainPage);
+        createBox = findViewById(R.id.addBoxMain);
         createBox.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, CreateBox.class)));
-
+        friendsButton = findViewById(R.id.friendsMain);
+        friendsButton.setOnClickListener(view -> startActivity(new Intent(this,Friends.class)));
         boxesListView = findViewById(R.id.boxListViewOnMainPage);
 
 //
@@ -59,8 +51,8 @@ ListView boxesListView;
     }
 
     void showUserInfo(User user){
-        userInfo.setText("Name: " + user.getDisplayName() + "\nE-mail: " + user.getEmail());
-        Glide.with(MainActivity.this).load(user.getPhotoUrl()).into(userPhoto);
+        //userInfo.setText("Name: " + user.getDisplayName() + "\nE-mail: " + user.getEmail());
+        //Glide.with(MainActivity.this).load(user.getPhotoUrl()).into(userPhoto);
     }
     void boxesFinder(){
         UserBoxesFinder ubf = new UserBoxesFinder();

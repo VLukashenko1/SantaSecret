@@ -7,9 +7,9 @@ import java.util.List;
 
 import androidx.lifecycle.MutableLiveData;
 
-public class UsersHolder {
-    private static final UsersHolder holder = new UsersHolder();
-    public static UsersHolder getInstance(){
+public class UsersInBoxHolder {
+    private static final UsersInBoxHolder holder = new UsersInBoxHolder();
+    public static UsersInBoxHolder getInstance(){
         return holder;
     }
 

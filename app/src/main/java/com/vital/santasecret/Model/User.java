@@ -1,23 +1,25 @@
 package com.vital.santasecret.Model;
 
+import java.util.List;
+
 public class User {
     String displayName, email, uId;
     String photoUrl;
-    String[] requestToFriends;
-    String[] Friends;
+    List<String> requestToFriends;
+    List<String> friends;
 
     String nickName;
 
     public User(){
 
     }
-    public User(String displayName, String email, String uId, String photoUrl, String[] requestToFriends, String[] friends, String nickName) {
+    public User(String displayName, String email, String uId, String photoUrl, List<String> requestToFriends, List<String> friends, String nickName) {
         this.displayName = displayName;
         this.email = email;
         this.uId = uId;
         this.photoUrl = photoUrl;
         this.requestToFriends = requestToFriends;
-        Friends = friends;
+        this.friends = friends;
         this.nickName = nickName;
     }
 
@@ -37,12 +39,12 @@ public class User {
         return photoUrl;
     }
 
-    public String[] getRequestToFriends() {
+    public List<String> getRequestToFriends() {
         return requestToFriends;
     }
 
-    public String[] getFriends() {
-        return Friends;
+    public List<String> getFriends() {
+        return friends;
     }
 
     public String getNickName() {

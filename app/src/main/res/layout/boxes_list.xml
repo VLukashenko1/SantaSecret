@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="410dp"
-        android:layout_height="91dp"
+        android:layout_height="82dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
@@ -26,19 +26,31 @@
         android:layout_marginBottom="7dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView3" />
+        app:layout_constraintTop_toTopOf="@+id/imageView3"
+        app:srcCompat="@drawable/box_logo" />
 
     <TextView
         android:id="@+id/nameOfBoxInBoxList"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="24dp"
         android:layout_marginRight="260dp"
-        android:layout_marginBottom="7dp"
         android:text="Название"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toEndOf="@+id/boxLogo"
-        app:layout_constraintTop_toTopOf="@+id/imageView3" />
+        app:layout_constraintTop_toTopOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.319" />
+
+    <TextView
+        android:id="@+id/counerOfMembersInBoxList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="2dp"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintStart_toEndOf="@+id/boxLogo"
+        app:layout_constraintTop_toBottomOf="@+id/nameOfBoxInBoxList" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

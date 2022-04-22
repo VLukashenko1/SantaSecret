@@ -38,6 +38,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         User user = users.get(position);
         holder.nameView.setText(user.getDisplayName());
         Glide.with(inflater.getContext()).load(user.getPhotoUrl()).into(holder.photo);
+
+        holder.itemView.setOnClickListener(view -> {
+            
+        });
     }
 
     @Override
@@ -50,8 +54,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         final TextView nameView;
         ViewHolder(View view){
             super(view);
-            photo = view.findViewById(R.id.userPhoto);
-            nameView = view.findViewById(R.id.name);
+            photo = view.findViewById(R.id.boxLogo);
+            nameView = view.findViewById(R.id.nameOfBoxInBoxList);
         }
     }
 }

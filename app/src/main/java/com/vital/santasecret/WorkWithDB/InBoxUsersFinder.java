@@ -3,8 +3,7 @@ package com.vital.santasecret.WorkWithDB;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.vital.santasecret.Model.User;
-import com.vital.santasecret.Util.UserHolder;
-import com.vital.santasecret.Util.UsersHolder;
+import com.vital.santasecret.Util.UsersInBoxHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,7 @@ public class InBoxUsersFinder {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     User user = documentSnapshot.toObject(User.class);
-                    UsersHolder.getInstance().adder(user);
+                    UsersInBoxHolder.getInstance().adder(user);
                 }
             });
         }
