@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -19,7 +20,7 @@ import java.util.List;
 public class InBoxActivity extends AppCompatActivity{
 TextView nameOfBox, size;
 RecyclerView recyclerView;
-ImageButton imageButton;
+ImageButton addUserToBox;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,10 +29,11 @@ ImageButton imageButton;
         //
         nameOfBox = findViewById(R.id.nameOfBoxInBoxAct);
         size = findViewById(R.id.counterOfParicipantsInBoxAct);
-        imageButton = findViewById(R.id.addUserToBoxInBoxAct);
-        imageButton.setOnClickListener(new View.OnClickListener() {
+        addUserToBox = findViewById(R.id.addUserToBoxInBoxAct);
+        addUserToBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                addUserToBox();
             }
         });
         //
@@ -51,12 +53,17 @@ ImageButton imageButton;
             }
         });
     }
-
     void fillRecyclerView(List<User> users){
         recyclerView = findViewById(R.id.recyclerViewInBoxAct);
         UsersAdapter adapter = new UsersAdapter(InBoxActivity.this, users);
         recyclerView.setAdapter(adapter);
 
+    }
+
+    void addUserToBox(){
+        Intent intent = new Intent(InBoxActivity.this, Friends.class);
+        intent.putExtra("IsFromInBoxActivity", true);
+        startActivity(intent);
     }
 
     void makeText(String  text){
