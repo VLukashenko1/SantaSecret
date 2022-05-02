@@ -6,7 +6,6 @@ import androidx.cardview.widget.CardView;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,11 +26,10 @@ import com.vital.santasecret.Model.User;
 import com.vital.santasecret.Util.UserHolder;
 import com.vital.santasecret.WorkWithDB.DbHelper;
 
-import java.security.Key;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class FindFriends extends AppCompatActivity {
+public class FriendsFinder extends AppCompatActivity {
     DbHelper dbHelper = new DbHelper();
 
 TextView badResult, goodResult;
@@ -50,10 +47,10 @@ ImageView friendPhoto;
         inputText = findViewById(R.id.inputFindFrAct);
         startFind = findViewById(R.id.findButtonFindFrAct);
 
-        startFind.setOnClickListener(View -> friendsFinder());
+        startFind.setOnClickListener(View -> findFriends());
         inputText.setOnKeyListener((view, i, keyEvent) -> {
             if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (i == KeyEvent.KEYCODE_ENTER)) {
-                friendsFinder();
+                findFriends();
                 return true;
             }
             return false;
@@ -68,7 +65,7 @@ ImageView friendPhoto;
         cancel = findViewById(R.id.cancelButtonFindFriendsAct);
     }
 
-    void friendsFinder(){
+    void findFriends(){
         if (inputText.getText().toString().isEmpty()){
             badResult.setText("Enter text");
             return;
@@ -131,9 +128,9 @@ ImageView friendPhoto;
                 }
             }
         }
-        hideKeyboard(FindFriends.this);
+        hideKeyboard(FriendsFinder.this);
         cardView.setVisibility(View.VISIBLE);
-        Glide.with(FindFriends.this).load(user.getPhotoUrl()).into(friendPhoto);
+        Glide.with(FriendsFinder.this).load(user.getPhotoUrl()).into(friendPhoto);
         goodResult.setText(user.getDisplayName());
         addToFriendButton.setOnClickListener(View -> addToFriendRequests(user.getuId()));
         cancel.setOnClickListener(View -> cardView.setVisibility(android.view.View.INVISIBLE));
@@ -142,12 +139,12 @@ ImageView friendPhoto;
         HashMap<String, Object> friends = new HashMap<>();
         friends.put("requestToFriends", Arrays.asList(UserHolder.getInstance().getLiveUser().getValue().getuId()));
         dbHelper.USERS_REF.document(Uid).set(friends, SetOptions.merge());
-        startActivity(new Intent(FindFriends.this, Friends.class));
+        startActivity(new Intent(FriendsFinder.this, Friends.class));
     }
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(FindFriends.this, Friends.class));
+        startActivity(new Intent(FriendsFinder.this, Friends.class));
         super.onBackPressed();
     }
     public static void hideKeyboard(Activity activity) {

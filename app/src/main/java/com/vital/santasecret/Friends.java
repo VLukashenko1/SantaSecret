@@ -13,15 +13,21 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.vital.santasecret.Model.User;
 import com.vital.santasecret.WorkWithDB.FriendsMover;
 import com.vital.santasecret.Util.UserHolder;
 import com.vital.santasecret.WorkWithDB.DbHelper;
+import com.vital.santasecret.WorkWithDB.InBoxUsersFinder;
+
+import java.util.Arrays;
+import java.util.HashMap;
 
 // TODO: 26.04.2022 Винести методи пошуку імен друзів в окремий метод для додавання в коробку з друзів
 public class Friends extends AppCompatActivity {
@@ -43,7 +49,7 @@ ListView frList;
         friendsCounter.setVisibility(View.INVISIBLE);
 
         addFriendsButton = findViewById(R.id.addFriendsButtonFriendsAct);
-        addFriendsButton.setOnClickListener(View ->  startActivity(new Intent(Friends.this, FindFriends.class)));
+        addFriendsButton.setOnClickListener(View ->  startActivity(new Intent(Friends.this, FriendsFinder.class)));
 
         frList = findViewById(R.id.listViewFriendsAct);
 
@@ -51,6 +57,9 @@ ListView frList;
             findFriendsNames(user);
             showFriendsRequest(user);
         });
+
+        //!!
+        addUserToBox();
     }
 
     void findFriendsNames(User user){
@@ -137,9 +146,27 @@ ListView frList;
     }
 
     void addUserToBox(){
-       /* if (getIntent().getBooleanExtra("IsFromInBoxActivity")){
-
-        }*/
+        if (getIntent().getBooleanExtra("IsFromInBoxActivity", false)){
+            String idOfBox = getIntent().getStringExtra("IdOfBox");
+            if (idOfBox == null){
+                startActivity(new Intent(Friends.this, InBoxActivity.class));
+                return;
+            }
+            frList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    String frId = UserHolder.getInstance().getLiveUser().getValue().getFriends().get(i);
+                    HashMap<String, Object> forPush = new HashMap<>();
+                    forPush.put("listOfUsers", Arrays.asList(frId));
+                    dbHelper.BOXES_REF.document(idOfBox)
+                            .set(forPush, SetOptions.merge());
+                    Toast.makeText(Friends.this,"You added friend to Box",Toast.LENGTH_SHORT).show();
+                    InBoxUsersFinder inBoxUsersFinder = new InBoxUsersFinder();
+                    inBoxUsersFinder.getListWithIdOfUsers(idOfBox);
+                    startActivity(new Intent(Friends.this, InBoxActivity.class));
+                }
+            });
+        }
     }
 
     @Override

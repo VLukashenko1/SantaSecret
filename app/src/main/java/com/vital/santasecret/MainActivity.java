@@ -9,21 +9,25 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.vital.santasecret.Model.Box;
 import com.vital.santasecret.Model.User;
+import com.vital.santasecret.Util.BoxHolder;
 import com.vital.santasecret.Util.BoxesHolder;
 import com.vital.santasecret.Util.UserHolder;
 import com.vital.santasecret.WorkWithDB.InBoxUsersFinder;
 import com.vital.santasecret.WorkWithDB.UserBoxesFinder;
+import com.vital.santasecret.WorkWithDB.UserChecker;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 Button createBox, friendsButton;
 ListView boxesListView;
+ImageView threeDots;
 
     InBoxUsersFinder inBoxUsersFinder = new InBoxUsersFinder();
 
@@ -31,13 +35,17 @@ ListView boxesListView;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+//
+        UserChecker uc = new UserChecker();
+        uc.userObserver();
+//
         createBox = findViewById(R.id.addBoxMain);
         createBox.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, CreateBox.class)));
         friendsButton = findViewById(R.id.friendsMain);
         friendsButton.setOnClickListener(view -> startActivity(new Intent(this,Friends.class)));
         boxesListView = findViewById(R.id.boxListViewOnMainPage);
-
+        threeDots = findViewById(R.id.threeDotsMain);
+        threeDots.setOnClickListener(View -> startActivity(new Intent(MainActivity.this,MyProfileActivity.class)));
 //
         UserHolder.getInstance().getLiveUser().observe(this, new Observer<User>() {
             @Override
@@ -45,6 +53,7 @@ ListView boxesListView;
                 showUserInfo(user);
             }
         });
+
         boxesFinder();
 //
 
@@ -74,6 +83,7 @@ ListView boxesListView;
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Box box = boxes.get(i);
                 inBoxUsersFinder.getListWithIdOfUsers(box.getIdOfBox());
+                BoxHolder.getInstance().getLiveUser().setValue(box);
                 Intent intent = new Intent(MainActivity.this, InBoxActivity.class);
                 intent.putExtra("nameOfBox", box.getNameOfBox());
                 startActivity(intent);

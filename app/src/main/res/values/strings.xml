@@ -10,5 +10,6 @@
     <string name="go">Go</string>
     <string name="garland_on_inboxactivity">garland on inBoxActivity</string>
     <string name="friends">Friends</string>
+    <string name="enter_nick_name">Enter nick name</string>
 
 </resources>

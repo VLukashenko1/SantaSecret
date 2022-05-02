@@ -23,7 +23,6 @@ import com.vital.santasecret.Model.Box;
 import com.vital.santasecret.WorkWithDB.DbHelper;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 public class CreateBox extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -130,6 +129,7 @@ public class CreateBox extends AppCompatActivity {
             }
         });
     }
+
     void makeText(String text){
         Toast.makeText(CreateBox.this, text, Toast.LENGTH_SHORT).show();
     }

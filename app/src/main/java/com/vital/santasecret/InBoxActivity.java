@@ -11,7 +11,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.vital.santasecret.Model.Box;
 import com.vital.santasecret.Model.User;
+import com.vital.santasecret.Util.BoxHolder;
 import com.vital.santasecret.Util.UsersInBoxHolder;
 import com.vital.santasecret.adapter.UsersAdapter;
 
@@ -33,7 +35,12 @@ ImageButton addUserToBox;
         addUserToBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addUserToBox();
+                BoxHolder.getInstance().getLiveUser().observe(InBoxActivity.this, new Observer<Box>() {
+                    @Override
+                    public void onChanged(Box box) {
+                        addUserToBox(box);
+                    }
+                });
             }
         });
         //
@@ -60,9 +67,10 @@ ImageButton addUserToBox;
 
     }
 
-    void addUserToBox(){
+    void addUserToBox(Box box){
         Intent intent = new Intent(InBoxActivity.this, Friends.class);
         intent.putExtra("IsFromInBoxActivity", true);
+        intent.putExtra("IdOfBox", box.getIdOfBox());
         startActivity(intent);
     }
 
