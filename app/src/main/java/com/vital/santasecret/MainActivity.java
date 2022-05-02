@@ -83,7 +83,7 @@ ImageView threeDots;
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Box box = boxes.get(i);
                 inBoxUsersFinder.getListWithIdOfUsers(box.getIdOfBox());
-                BoxHolder.getInstance().getLiveUser().setValue(box);
+                BoxHolder.getInstance().getLiveBox().setValue(box);
                 Intent intent = new Intent(MainActivity.this, InBoxActivity.class);
                 intent.putExtra("nameOfBox", box.getNameOfBox());
                 startActivity(intent);

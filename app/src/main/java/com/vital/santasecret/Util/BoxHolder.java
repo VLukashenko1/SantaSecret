@@ -11,9 +11,9 @@ public class BoxHolder {
         return holder;
     }
 
-    private MutableLiveData<Box> userLiveData = new MutableLiveData<>();
-    public MutableLiveData<Box> getLiveUser() {
-        return userLiveData;
+    private MutableLiveData<Box> boxLiveData = new MutableLiveData<>();
+    public MutableLiveData<Box> getLiveBox() {
+        return boxLiveData;
     }
 
 }
