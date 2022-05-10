@@ -15,7 +15,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.SetOptions;
@@ -57,10 +56,10 @@ public class CreateBox extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i){
                     case R.id.radioButtonCreateBox:
-                        boxname.setHint("Enter box name");
+                        boxname.setHint(getResources().getString(R.string.enter_box_name));
                         break;
                     case R.id.radioButtonConnectToBox:
-                        boxname.setHint("Enter box id");
+                        boxname.setHint(getResources().getString(R.string.enter_box_id));
                         break;
                 }
             }
@@ -76,7 +75,7 @@ public class CreateBox extends AppCompatActivity {
                      isBoxExist(boxname.getText().toString());
                      return;
                  }
-                 makeText("Enter id of Box");
+                 makeText(getResources().getString(R.string.enter_box_id));
                  break;
           }
 
@@ -86,19 +85,16 @@ public class CreateBox extends AppCompatActivity {
     void createBox(){
         String name = boxname.getText().toString();
         if (name.isEmpty()){
-            makeText("Enter name of box");
+            makeText(getResources().getString(R.string.enter_box_name));
             return;
         }
         Box box = new Box(auth.getCurrentUser().getUid(), name, null, null);
-        dbHelper.BOXES_REF.add(box).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                HashMap<String, String> id = new HashMap<>();
-                id.put("idOfBox", documentReference.getId());
-                dbHelper.BOXES_REF.document(documentReference.getId()).set(id, SetOptions.merge());
-            }
+        dbHelper.BOXES_REF.add(box).addOnSuccessListener(documentReference -> {
+            HashMap<String, String> id = new HashMap<>();
+            id.put("idOfBox", documentReference.getId());
+            dbHelper.BOXES_REF.document(documentReference.getId()).set(id, SetOptions.merge());
         });
-        makeText("Box created");
+        makeText(getResources().getString(R.string.box_created));
         changeActivity();
     }
     void connectToBox(String idOfBox){
@@ -106,7 +102,7 @@ public class CreateBox extends AppCompatActivity {
                 .arrayUnion(auth.getCurrentUser().getUid())).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {}});
-        makeText("you connected to box");
+        makeText(getResources().getString(R.string.you_connect_to_box_success));
         changeActivity();
     }
     void isBoxExist(String idOfBox){
@@ -117,15 +113,15 @@ public class CreateBox extends AppCompatActivity {
                     if (!documentSnapshot.get(DbHelper.ID_OF_BOX_CREATOR).toString().equals(auth.getCurrentUser().getUid())){
                         connectToBox(idOfBox);
                     }
-                    makeText("This box where created by yourself");
+                    makeText(getResources().getString(R.string.box_created_by_yourself));
                     return;
                 }
-                makeText("Box not found");
+                makeText(getResources().getString(R.string.box_not_found));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                makeText("An error occurred");
+                makeText(getResources().getString(R.string.error));
             }
         });
     }

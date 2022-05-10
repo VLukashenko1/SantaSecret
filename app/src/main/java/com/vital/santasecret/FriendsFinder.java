@@ -67,7 +67,7 @@ ImageView friendPhoto;
 
     void findFriends(){
         if (inputText.getText().toString().isEmpty()){
-            badResult.setText("Enter text");
+            badResult.setText(getResources().getString(R.string.enter_text));
             return;
         }
         findByNickName(inputText.getText().toString());
@@ -102,7 +102,7 @@ ImageView friendPhoto;
     void findByEmail(String input){
         dbHelper.USERS_REF.whereEqualTo("email", input).get().addOnCompleteListener(task -> {
             if (task.getResult().isEmpty()){
-                badResult.setText("nothing found");
+                badResult.setText(getResources().getString(R.string.nothing_found));
                 return;
             }
             for (DocumentSnapshot document:task.getResult()) {
@@ -113,17 +113,17 @@ ImageView friendPhoto;
     }
     void fillCard(User user){
         if (user == null){
-            badResult.setText("nothing found");
+            badResult.setText(getResources().getString(R.string.nothing_found));
             return;
         }
         if (user.getuId() != null && user.getuId().equals(UserHolder.getInstance().getLiveUser().getValue().getuId())){
-            badResult.setText("You have entered your details");
+            badResult.setText(getResources().getString(R.string.you_have_enter_your_details));
             return;
         }
         if (UserHolder.getInstance().getLiveUser().getValue().getFriends() != null){
         for (int i=0; i < UserHolder.getInstance().getLiveUser().getValue().getFriends().size();i++){
                 if (UserHolder.getInstance().getLiveUser().getValue().getFriends().get(i).equals(user.getuId())){
-                    badResult.setText("You are already friends :)");
+                    badResult.setText(getResources().getString(R.string.you_are_already_friends));
                     return;
                 }
             }

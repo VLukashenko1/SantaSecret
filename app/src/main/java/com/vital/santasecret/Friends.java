@@ -133,11 +133,11 @@ ListView frList;
                 String friendId = UserHolder.getInstance().getLiveUser().getValue().getRequestToFriends().get(i);
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Friends.this);
-                alertDialogBuilder.setTitle("Choose an action ? ");
-                alertDialogBuilder.setMessage("Add to friends ? ").setCancelable(true)
-                        .setPositiveButton("YES",(dialogInterface, i1) -> {
+                alertDialogBuilder.setTitle(getResources().getString(R.string.choose_an_action));
+                alertDialogBuilder.setMessage(getResources().getString(R.string.add_to_friends_ask)).setCancelable(true)
+                        .setPositiveButton(getResources().getString(R.string.yes),(dialogInterface, i1) -> {
                     friendsMover.addToFriends(currentUserId, friendId);
-                }).setNegativeButton("NO", (dialogInterface, i12) ->
+                }).setNegativeButton(getResources().getString(R.string.no), (dialogInterface, i12) ->
                         friendsMover.dellUserFromFriendsRequest(currentUserId,friendId));
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
@@ -160,7 +160,7 @@ ListView frList;
                     forPush.put("listOfUsers", Arrays.asList(frId));
                     dbHelper.BOXES_REF.document(idOfBox)
                             .set(forPush, SetOptions.merge());
-                    Toast.makeText(Friends.this,"You added friend to Box",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Friends.this,getResources().getString(R.string.you_added_friend_to_box),Toast.LENGTH_SHORT).show();
                     InBoxUsersFinder inBoxUsersFinder = new InBoxUsersFinder();
                     inBoxUsersFinder.getListWithIdOfUsers(idOfBox);
                     startActivity(new Intent(Friends.this, InBoxActivity.class));

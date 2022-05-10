@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">SantaSecret</string>
-    <string name="signinbutton">SignInButton</string>
+    <string name="sign_in_button">SignInButton</string>
     <string name="NoData">-</string>
     <string name="login_with_e_mail">Login with e-mail</string>
     <string name="box_making">Box Making</string>
@@ -8,8 +8,32 @@
     <string name="create_box">Create box</string>
     <string name="choose_action">Choose an action</string>
     <string name="go">Go</string>
-    <string name="garland_on_inboxactivity">garland on inBoxActivity</string>
+    <string name="garland_on_in_box_activity">garland on inBoxActivity</string>
     <string name="friends">Friends</string>
     <string name="enter_nick_name">Enter nick name</string>
+    <string name="main_text_make_msg_act">There you can leave message for friend that will prepare present for you</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="success">Success</string>
+    //Create Box activity
+    <string name="enter_box_name">Enter box name</string>
+    <string name="enter_box_id">Enter box id</string>
+    <string name="box_created">Box created success</string>
+    <string name="box_created_by_yourself">This box where created by yourself</string>
+    <string name="you_connect_to_box_success">You connected to box success</string>
+    <string name="box_not_found">Box not found</string>
+    <string name="error">An error occurred</string>
+    //Friends Activity
+    <string name="choose_an_action">Choose an action</string>
+    <string name="add_to_friends_ask">Add to friends ?</string>
+    <string name="you_added_friend_to_box">You added friend to box</string>
+    //Friends Finder
+    <string name="enter_text">Enter text</string>
+    <string name="nothing_found">Nothing found </string>
+    <string name="you_have_enter_your_details">You have enter your details</string>
+    <string name="you_are_already_friends">You are already friends</string>
+    //In Box Activity
+    <string name="you_cant_start_yet">You can"'"t start yet :c </string>
+    //
 
 </resources>

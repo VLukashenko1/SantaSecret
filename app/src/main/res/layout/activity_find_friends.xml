@@ -12,7 +12,7 @@
         android:layout_height="198dp"
         android:layout_marginStart="3dp"
         android:layout_marginTop="16dp"
-        android:contentDescription="@string/garland_on_inboxactivity"
+        android:contentDescription="@string/garland_on_in_box_activity"
         android:rotation="-10"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
