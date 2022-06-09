@@ -1,4 +1,4 @@
-package com.vital.santasecret;
+package com.vital.santasecret.UI;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +19,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.vital.santasecret.Model.User;
+import com.vital.santasecret.R;
 import com.vital.santasecret.Util.UserHolder;
 import com.vital.santasecret.WorkWithDB.DbHelper;
 

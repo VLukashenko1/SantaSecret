@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "95214450988-hki37q92u27mvtnqrbef35nus13h6pod.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vital.pop5",
+            "certificate_hash": "6cc6f2d60f595306bdae83664e57488f15a669ba"
+          }
+        },
+        {
           "client_id": "95214450988-coh1plqvd0i85co0du2j672v1pu4g09s.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -43,6 +51,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "95214450988-2ijb4fq3gvkvbki63la5kkj7u9p2nsat.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vital.santasecret",
+            "certificate_hash": "6cc6f2d60f595306bdae83664e57488f15a669ba"
+          }
+        },
         {
           "client_id": "95214450988-coh1plqvd0i85co0du2j672v1pu4g09s.apps.googleusercontent.com",
           "client_type": 3

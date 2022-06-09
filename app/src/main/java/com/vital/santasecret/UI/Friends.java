@@ -1,4 +1,4 @@
-package com.vital.santasecret;
+package com.vital.santasecret.UI;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -17,26 +17,26 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 import com.vital.santasecret.Model.User;
+import com.vital.santasecret.R;
+import com.vital.santasecret.ViewModel.FriendsViewModel;
 import com.vital.santasecret.WorkWithDB.FriendsMover;
 import com.vital.santasecret.Util.UserHolder;
 import com.vital.santasecret.WorkWithDB.DbHelper;
 import com.vital.santasecret.WorkWithDB.InBoxUsersFinder;
 
-import java.util.Arrays;
-import java.util.HashMap;
-
-// TODO: 26.04.2022 Винести методи пошуку імен друзів в окремий метод для додавання в коробку з друзів
 public class Friends extends AppCompatActivity {
     DbHelper dbHelper = new DbHelper();
 
-TextView friendsCounter;
-ImageView ellipseFriends;
-ImageButton addFriendsButton;
-ListView frList;
+    TextView friendsCounter;
+    ImageView ellipseFriends;
+    ImageButton addFriendsButton;
+    ListView frList;
+
+    FriendsViewModel mViewModel = new FriendsViewModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +54,8 @@ ListView frList;
         frList = findViewById(R.id.listViewFriendsAct);
 
         UserHolder.getInstance().getLiveUser().observe(this, user -> {
+            mViewModel.starter(user);
+
             findFriendsNames(user);
             showFriendsRequest(user);
         });
@@ -69,25 +71,25 @@ ListView frList;
         dbHelper.USERS_REF.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-               if(task.isSuccessful()){
-                   String[] friendNames = new String[user.getFriends().size()];
-                   int counter = 0;
-                   for(QueryDocumentSnapshot document : task.getResult()){
-                       for (int i = 0; i < user.getFriends().size(); i++){
-                           if (user.getFriends().get(i).equals(document.getId())){
-                               friendNames[counter] = document.getData().get("displayName").toString();
-                               counter++;
-                           }
-                       }
-                   }
-                   showFriends(friendNames);
-               }
+                if(task.isSuccessful()){
+                    String[] friendNames = new String[user.getFriends().size()];
+                    int counter = 0;
+                    for(QueryDocumentSnapshot document : task.getResult()){
+                        for (int i = 0; i < user.getFriends().size(); i++){
+                            if (user.getFriends().get(i).equals(document.getId())){
+                                friendNames[counter] = document.getData().get("displayName").toString();
+                                counter++;
+                            }
+                        }
+                    }
+                    showFriends(friendNames);
+                }
             }
         });
     }
-    void showFriends(String[] friendsNames){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Friends.this, android.R.layout.simple_list_item_1,friendsNames);
-        frList.setAdapter(adapter);
+
+    public void showFriends(String[] friendsNames){
+        frList.setAdapter(new ArrayAdapter<String>(Friends.this, android.R.layout.simple_list_item_1,friendsNames));
         registerForContextMenu(frList);
     }
 
@@ -156,10 +158,7 @@ ListView frList;
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     String frId = UserHolder.getInstance().getLiveUser().getValue().getFriends().get(i);
-                    HashMap<String, Object> forPush = new HashMap<>();
-                    forPush.put("listOfUsers", Arrays.asList(frId));
-                    dbHelper.BOXES_REF.document(idOfBox)
-                            .set(forPush, SetOptions.merge());
+                    dbHelper.BOXES_REF.document(idOfBox).update("listOfUsers", FieldValue.arrayUnion(frId));
                     Toast.makeText(Friends.this,getResources().getString(R.string.you_added_friend_to_box),Toast.LENGTH_SHORT).show();
                     InBoxUsersFinder inBoxUsersFinder = new InBoxUsersFinder();
                     inBoxUsersFinder.getListWithIdOfUsers(idOfBox);

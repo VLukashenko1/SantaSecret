@@ -34,6 +34,11 @@
     <string name="you_are_already_friends">You are already friends</string>
     //In Box Activity
     <string name="you_cant_start_yet">You can"'"t start yet :c </string>
+    <string name="participant">Participant</string>
+    <string name="you_should_prepare_for">You should prepare for </string>
+    <string name="that_want">\" that want: \"</string>
+    <string name="no_message_yet">\" no message yet\"</string>
+    <string name="you_don_t_create_message_yet">You don\'t create message yet</string>
     //
 
 </resources>

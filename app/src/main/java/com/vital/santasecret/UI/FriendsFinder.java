@@ -1,4 +1,4 @@
-package com.vital.santasecret;
+package com.vital.santasecret.UI;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +23,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.vital.santasecret.Model.User;
+import com.vital.santasecret.R;
 import com.vital.santasecret.Util.UserHolder;
 import com.vital.santasecret.WorkWithDB.DbHelper;
 
@@ -106,7 +107,6 @@ ImageView friendPhoto;
                 return;
             }
             for (DocumentSnapshot document:task.getResult()) {
-
                 fillCard(document.toObject(User.class));
             }
         });
@@ -121,7 +121,7 @@ ImageView friendPhoto;
             return;
         }
         if (UserHolder.getInstance().getLiveUser().getValue().getFriends() != null){
-        for (int i=0; i < UserHolder.getInstance().getLiveUser().getValue().getFriends().size();i++){
+            for (int i=0; i < UserHolder.getInstance().getLiveUser().getValue().getFriends().size();i++){
                 if (UserHolder.getInstance().getLiveUser().getValue().getFriends().get(i).equals(user.getuId())){
                     badResult.setText(getResources().getString(R.string.you_are_already_friends));
                     return;

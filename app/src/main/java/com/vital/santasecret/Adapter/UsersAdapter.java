@@ -1,4 +1,4 @@
-package com.vital.santasecret.adapter;
+package com.vital.santasecret.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

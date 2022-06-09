@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.vital.santasecret">
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,28 +10,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Material3.Light.NoActionBar">
         <activity
-            android:name=".MakeMessageActivity"
+            android:name=".UI.MakeMessageActivity"
             android:exported="false" />
         <activity
-            android:name=".MyProfileActivity"
+            android:name=".UI.MyProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".FriendsFinder"
+            android:name=".UI.FriendsFinder"
             android:exported="false" />
         <activity
-            android:name=".Friends"
+            android:name=".UI.Friends"
             android:exported="false" />
         <activity
-            android:name=".InBoxActivity"
+            android:name=".UI.InBoxActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateBox"
+            android:name=".UI.CreateBox"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".UI.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".SignInActivity"
+            android:name=".UI.SignInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,5 +1,7 @@
 package com.vital.santasecret.WorkWithDB;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.vital.santasecret.WorkWithDB.DbHelper;
 
@@ -15,14 +17,10 @@ public class FriendsMover {
         dellUserFromFriendsRequest(currentUserId,friendId);
     }
     public void dellUserFromFriendsRequest(String uId, String frId){
-        HashMap<String,Object> hashMap = new HashMap<>();
-        hashMap.put("requestToFriends", FieldValue.arrayRemove(frId) );
-        dbHelper.USERS_REF.document(uId).update(hashMap);
-
-        //Видалити заявку в друга, якщо є
         HashMap<String,Object> frHashMap = new HashMap<>();
         frHashMap.put("requestToFriends", FieldValue.arrayRemove(uId) );
         dbHelper.USERS_REF.document(frId).update(frHashMap);
+
     }
 
     public void dellUserFromFriend(String uId, String frId){

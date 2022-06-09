@@ -1,4 +1,4 @@
-package com.vital.santasecret;
+package com.vital.santasecret.UI;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +19,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.SetOptions;
 import com.vital.santasecret.Model.Box;
+import com.vital.santasecret.R;
 import com.vital.santasecret.WorkWithDB.DbHelper;
 
 import java.util.HashMap;
@@ -29,7 +30,7 @@ public class CreateBox extends AppCompatActivity {
 
     ImageButton backButton;
     RadioGroup radioGroup;
-    TextInputEditText boxname;
+    TextInputEditText boxName;
     Button go;
 
     @Override
@@ -41,7 +42,7 @@ public class CreateBox extends AppCompatActivity {
         backButton.setOnClickListener(view -> startActivity(new Intent(CreateBox.this, MainActivity.class)));
         backButton.setVisibility(View.INVISIBLE);
 
-        boxname = findViewById(R.id.createBoxInput);
+        boxName = findViewById(R.id.createBoxInput);
         radioGroup = findViewById(R.id.radioGroupCreateBoxAct);
         go = findViewById(R.id.createBoxButtonCreateBoxAct);
         go.setOnClickListener(view -> {
@@ -56,10 +57,10 @@ public class CreateBox extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i){
                     case R.id.radioButtonCreateBox:
-                        boxname.setHint(getResources().getString(R.string.enter_box_name));
+                        boxName.setHint(getResources().getString(R.string.enter_box_name));
                         break;
                     case R.id.radioButtonConnectToBox:
-                        boxname.setHint(getResources().getString(R.string.enter_box_id));
+                        boxName.setHint(getResources().getString(R.string.enter_box_id));
                         break;
                 }
             }
@@ -71,8 +72,8 @@ public class CreateBox extends AppCompatActivity {
                  createBox();
                  break;
              case R.id.radioButtonConnectToBox:
-                 if (!boxname.getText().toString().isEmpty()){
-                     isBoxExist(boxname.getText().toString());
+                 if (!boxName.getText().toString().isEmpty()){
+                     isBoxExist(boxName.getText().toString());
                      return;
                  }
                  makeText(getResources().getString(R.string.enter_box_id));
@@ -83,7 +84,7 @@ public class CreateBox extends AppCompatActivity {
     }
 
     void createBox(){
-        String name = boxname.getText().toString();
+        String name = boxName.getText().toString();
         if (name.isEmpty()){
             makeText(getResources().getString(R.string.enter_box_name));
             return;

@@ -1,6 +1,8 @@
-package com.vital.santasecret;
+package com.vital.santasecret.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +15,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.vital.santasecret.R;
+import com.vital.santasecret.ViewModel.MakeMessageViewModel;
 import com.vital.santasecret.WorkWithDB.DbHelper;
 
 import java.util.HashMap;
@@ -23,7 +27,7 @@ Button pushMessage;
 TextView currentMessage, instruction;
 String boxId, boxName, userId;
 
-DbHelper dbHelper = new DbHelper();
+private MakeMessageViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,42 +42,26 @@ DbHelper dbHelper = new DbHelper();
         currentMessage = findViewById(R.id.currentMessage);
         instruction = findViewById(R.id.textView3);
 
+
         boxId = getIntent().getExtras().get("boxId").toString();
         boxName = getIntent().getExtras().get("boxName").toString();
         userId = getIntent().getExtras().get("userId").toString();
-
+        instruction.setText(instruction.getText().toString() + " for box: " + boxName);
+//
+        mViewModel = new MakeMessageViewModel(userId, boxId);
+//
         findCurrentMessage();
     }
 
     void findCurrentMessage(){
-        currentMessage.setText("You don't create message yet");
-        instruction.setText(instruction.getText().toString() + " for box: " + boxName);
-
-        dbHelper.BOX_MESSAGE.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (DocumentSnapshot doc: queryDocumentSnapshots.getDocuments()) {
-                    if (doc.getId().equals(boxId)){
-                        if (doc.get(userId) != null){
-                            currentMessage.setText("");
-                            input.setText(doc.get(userId).toString());
-                        }
-                    }
-                }
-            }
+        mViewModel.getCurrentMessage(boxId,userId).observe(this,currentMessage ->{
+            this.currentMessage.setText("");
+            input.setText(currentMessage);
         });
     }
     void pushNewMessage(){
-        if (input.getText().toString().isEmpty() || input.getText() == null){
-            makeText("Fill input");
-            return;
-        }
-        HashMap<String, String > forPush = new HashMap<>();
-        forPush.put(userId, input.getText().toString());
-        dbHelper.BOX_MESSAGE.document(boxId).set(forPush, SetOptions.merge());
-        makeText("Message changed success");
+        makeText(mViewModel.pushNewMessage(input));
         findCurrentMessage();
-        return;
     }
 
     void makeText(String text){

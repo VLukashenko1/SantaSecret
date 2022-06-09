@@ -33,7 +33,8 @@ public class UserChecker {
         User user = new User(auth.getCurrentUser().getDisplayName(),
                              auth.getCurrentUser().getEmail(),
                              auth.getCurrentUser().getUid(),
-                             auth.getCurrentUser().getPhotoUrl().toString(), null, null,null);
+                             auth.getCurrentUser().getPhotoUrl().toString(),
+                null, null,null);
 
         dbHelper.USERS_REF.document(auth.getCurrentUser().getUid()).set(user);
 
@@ -62,6 +63,7 @@ public class UserChecker {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 UserHolder.getInstance().getLiveUser().setValue(value.toObject(User.class));
+                System.out.println("User info changed");
             }
         });
     }

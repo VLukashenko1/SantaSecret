@@ -1,4 +1,4 @@
-package com.vital.santasecret;
+package com.vital.santasecret.UI;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +22,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.vital.santasecret.R;
 import com.vital.santasecret.WorkWithDB.UserChecker;
 
 public class SignInActivity extends AppCompatActivity {

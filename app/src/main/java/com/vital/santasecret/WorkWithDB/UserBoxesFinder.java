@@ -1,6 +1,7 @@
 package com.vital.santasecret.WorkWithDB;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,11 +21,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class UserBoxesFinder {
+    private static final String LOG_TAG = "User Boxes FINDER";
+
     FirebaseAuth auth = FirebaseAuth.getInstance();
     DbHelper dbHelper = new DbHelper();
     BoxesHolder boxesHolder = BoxesHolder.getInstance();
 
-    public void findBoxCreatedByUser(){
+    private void findBoxCreatedByUser(){
         dbHelper.BOXES_REF.whereEqualTo("idOfCreator", auth.getCurrentUser().getUid())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -44,7 +47,7 @@ public class UserBoxesFinder {
 
         });
     }
-    void findBoxWhereUserInclude(List<Box> boxes){
+    private void findBoxWhereUserInclude(List<Box> boxes){
         dbHelper.BOXES_REF.whereArrayContains("listOfUsers", auth.getCurrentUser().getUid()).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -66,6 +69,7 @@ public class UserBoxesFinder {
             @Override
             public void run() {
                 findBoxCreatedByUser();
+                Log.d(LOG_TAG, "Box Finding Started");
             }
         });
     }
