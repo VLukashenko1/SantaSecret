@@ -128,13 +128,18 @@ ImageView friendPhoto;
                 }
             }
         }
-        hideKeyboard(FriendsFinder.this);
-        cardView.setVisibility(View.VISIBLE);
-        Glide.with(FriendsFinder.this).load(user.getPhotoUrl()).into(friendPhoto);
-        goodResult.setText(user.getDisplayName());
-        addToFriendButton.setOnClickListener(View -> addToFriendRequests(user.getuId()));
-        cancel.setOnClickListener(View -> cardView.setVisibility(android.view.View.INVISIBLE));
+            hideKeyboard(FriendsFinder.this);
+            cardView.setVisibility(View.VISIBLE);
+            Glide.with(FriendsFinder.this).load(user.getPhotoUrl()).into(friendPhoto);
+            goodResult.setText(user.getDisplayName());
+            addToFriendButton.setOnClickListener(View -> addToFriendRequests(user.getuId()));
+            cancel.setOnClickListener(View -> cardView.setVisibility(android.view.View.INVISIBLE));
     }
+
+    void textChanger(String text){
+
+    }
+
     void addToFriendRequests(String Uid){
         HashMap<String, Object> friends = new HashMap<>();
         friends.put("requestToFriends", Arrays.asList(UserHolder.getInstance().getLiveUser().getValue().getuId()));

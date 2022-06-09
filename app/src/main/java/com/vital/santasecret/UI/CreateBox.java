@@ -1,6 +1,5 @@
 package com.vital.santasecret.UI;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,32 +10,24 @@ import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.SetOptions;
-import com.vital.santasecret.Model.Box;
 import com.vital.santasecret.R;
-import com.vital.santasecret.WorkWithDB.DbHelper;
-
-import java.util.HashMap;
+import com.vital.santasecret.ViewModel.CreateBoxViewModel;
 
 public class CreateBox extends AppCompatActivity {
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    DbHelper dbHelper = new DbHelper();
+    private CreateBoxViewModel mViewModel;
 
     ImageButton backButton;
     RadioGroup radioGroup;
     TextInputEditText boxName;
-    Button go;
+    Button createBoxButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_box);
+
+        mViewModel = new CreateBoxViewModel(this);
 
         backButton = findViewById(R.id.backButtonCreateBoxAct);
         backButton.setOnClickListener(view -> startActivity(new Intent(CreateBox.this, MainActivity.class)));
@@ -44,14 +35,14 @@ public class CreateBox extends AppCompatActivity {
 
         boxName = findViewById(R.id.createBoxInput);
         radioGroup = findViewById(R.id.radioGroupCreateBoxAct);
-        go = findViewById(R.id.createBoxButtonCreateBoxAct);
-        go.setOnClickListener(view -> {
+        createBoxButton = findViewById(R.id.createBoxButtonCreateBoxAct);
+        createBoxButton.setOnClickListener(view -> {
             actionChoosing(radioGroup.getCheckedRadioButtonId());
         });
 
-        setHint();
+        boxNameHintSetter();
     }
-    void setHint(){
+    void boxNameHintSetter(){
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -69,11 +60,16 @@ public class CreateBox extends AppCompatActivity {
     void actionChoosing(int i){
         switch (i){
             case R.id.radioButtonCreateBox:
-                 createBox();
+                 makeText(mViewModel.createBox(boxName.getText().toString()));
+                 changeActivity();
                  break;
              case R.id.radioButtonConnectToBox:
                  if (!boxName.getText().toString().isEmpty()){
-                     isBoxExist(boxName.getText().toString());
+                     mViewModel.getResult().observe(this, result ->{
+                         mViewModel.isBoxExist(boxName.getText().toString());
+                         makeText(result);
+                         changeActivity();
+                     });
                      return;
                  }
                  makeText(getResources().getString(R.string.enter_box_id));
@@ -83,55 +79,10 @@ public class CreateBox extends AppCompatActivity {
 
     }
 
-    void createBox(){
-        String name = boxName.getText().toString();
-        if (name.isEmpty()){
-            makeText(getResources().getString(R.string.enter_box_name));
-            return;
-        }
-        Box box = new Box(auth.getCurrentUser().getUid(), name, null, null);
-        dbHelper.BOXES_REF.add(box).addOnSuccessListener(documentReference -> {
-            HashMap<String, String> id = new HashMap<>();
-            id.put("idOfBox", documentReference.getId());
-            dbHelper.BOXES_REF.document(documentReference.getId()).set(id, SetOptions.merge());
-        });
-        makeText(getResources().getString(R.string.box_created));
-        changeActivity();
-    }
-    void connectToBox(String idOfBox){
-        dbHelper.BOXES_REF.document(idOfBox).update("listOfUsers", FieldValue
-                .arrayUnion(auth.getCurrentUser().getUid())).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {}});
-        makeText(getResources().getString(R.string.you_connect_to_box_success));
-        changeActivity();
-    }
-    void isBoxExist(String idOfBox){
-        dbHelper.BOXES_REF.document(idOfBox).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.getData() != null){
-                    if (!documentSnapshot.get(DbHelper.ID_OF_BOX_CREATOR).toString().equals(auth.getCurrentUser().getUid())){
-                        connectToBox(idOfBox);
-                    }
-                    makeText(getResources().getString(R.string.box_created_by_yourself));
-                    return;
-                }
-                makeText(getResources().getString(R.string.box_not_found));
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                makeText(getResources().getString(R.string.error));
-            }
-        });
-    }
-
     void makeText(String text){
         Toast.makeText(CreateBox.this, text, Toast.LENGTH_SHORT).show();
     }
     void changeActivity(){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

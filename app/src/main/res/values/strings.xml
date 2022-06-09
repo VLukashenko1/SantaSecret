@@ -39,6 +39,7 @@
     <string name="that_want">\" that want: \"</string>
     <string name="no_message_yet">\" no message yet\"</string>
     <string name="you_don_t_create_message_yet">You don\'t create message yet</string>
+    <string name="copied">copied</string>
     //
 
 </resources>
