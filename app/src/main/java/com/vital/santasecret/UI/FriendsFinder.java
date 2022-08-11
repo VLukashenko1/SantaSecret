@@ -33,11 +33,11 @@ import java.util.HashMap;
 public class FriendsFinder extends AppCompatActivity {
     DbHelper dbHelper = new DbHelper();
 
-TextView badResult, goodResult;
-TextInputEditText inputText;
-Button startFind, addToFriendButton, cancel;
-CardView cardView;
-ImageView friendPhoto;
+    TextView badResult, goodResult;
+    TextInputEditText inputText;
+    Button startFind, addToFriendButton, cancel;
+    CardView cardView;
+    ImageView friendPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,33 +66,35 @@ ImageView friendPhoto;
         cancel = findViewById(R.id.cancelButtonFindFriendsAct);
     }
 
-    void findFriends(){
-        if (inputText.getText().toString().isEmpty()){
+    void findFriends() {
+        if (inputText == null || inputText.getText() == null || inputText.getText().toString().isEmpty()) {
             badResult.setText(getResources().getString(R.string.enter_text));
             return;
         }
         findByNickName(inputText.getText().toString());
 
     }
-    void findByNickName(String input){
+
+    void findByNickName(String input) {
         dbHelper.USERS_REF.whereEqualTo("nickName", input).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.getResult().isEmpty()){
+                if (task.getResult().isEmpty()) {
                     findById(inputText.getText().toString());
                     return;
                 }
-                for (DocumentSnapshot documentSnapshot:task.getResult()) {
+                for (DocumentSnapshot documentSnapshot : task.getResult()) {
                     fillCard(documentSnapshot.toObject(User.class));
                 }
             }
         });
     }
-    void findById(String input){
+
+    void findById(String input) {
         dbHelper.USERS_REF.document(input).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.getData() == null){
+                if (documentSnapshot.getData() == null) {
                     findByEmail(input);
                     return;
                 }
@@ -100,47 +102,45 @@ ImageView friendPhoto;
             }
         });
     }
-    void findByEmail(String input){
+
+    void findByEmail(String input) {
         dbHelper.USERS_REF.whereEqualTo("email", input).get().addOnCompleteListener(task -> {
-            if (task.getResult().isEmpty()){
+            if (task.getResult().isEmpty()) {
                 badResult.setText(getResources().getString(R.string.nothing_found));
                 return;
             }
-            for (DocumentSnapshot document:task.getResult()) {
+            for (DocumentSnapshot document : task.getResult()) {
                 fillCard(document.toObject(User.class));
             }
         });
     }
-    void fillCard(User user){
-        if (user == null){
+
+    void fillCard(User user) {
+        if (user == null) {
             badResult.setText(getResources().getString(R.string.nothing_found));
             return;
         }
-        if (user.getuId() != null && user.getuId().equals(UserHolder.getInstance().getLiveUser().getValue().getuId())){
+        if (user.getuId() != null && user.getuId().equals(UserHolder.getInstance().getLiveUser().getValue().getuId())) {
             badResult.setText(getResources().getString(R.string.you_have_enter_your_details));
             return;
         }
-        if (UserHolder.getInstance().getLiveUser().getValue().getFriends() != null){
-            for (int i=0; i < UserHolder.getInstance().getLiveUser().getValue().getFriends().size();i++){
-                if (UserHolder.getInstance().getLiveUser().getValue().getFriends().get(i).equals(user.getuId())){
+        if (UserHolder.getInstance().getLiveUser().getValue().getFriends() != null) {
+            for (int i = 0; i < UserHolder.getInstance().getLiveUser().getValue().getFriends().size(); i++) {
+                if (UserHolder.getInstance().getLiveUser().getValue().getFriends().get(i).equals(user.getuId())) {
                     badResult.setText(getResources().getString(R.string.you_are_already_friends));
                     return;
                 }
             }
         }
-            hideKeyboard(FriendsFinder.this);
-            cardView.setVisibility(View.VISIBLE);
-            Glide.with(FriendsFinder.this).load(user.getPhotoUrl()).into(friendPhoto);
-            goodResult.setText(user.getDisplayName());
-            addToFriendButton.setOnClickListener(View -> addToFriendRequests(user.getuId()));
-            cancel.setOnClickListener(View -> cardView.setVisibility(android.view.View.INVISIBLE));
+        hideKeyboard(FriendsFinder.this);
+        cardView.setVisibility(View.VISIBLE);
+        Glide.with(FriendsFinder.this).load(user.getPhotoUrl()).into(friendPhoto);
+        goodResult.setText(user.getDisplayName());
+        addToFriendButton.setOnClickListener(View -> addToFriendRequests(user.getuId()));
+        cancel.setOnClickListener(View -> cardView.setVisibility(android.view.View.INVISIBLE));
     }
 
-    void textChanger(String text){
-
-    }
-
-    void addToFriendRequests(String Uid){
+    void addToFriendRequests(String Uid) {
         HashMap<String, Object> friends = new HashMap<>();
         friends.put("requestToFriends", Arrays.asList(UserHolder.getInstance().getLiveUser().getValue().getuId()));
         dbHelper.USERS_REF.document(Uid).set(friends, SetOptions.merge());
@@ -152,6 +152,7 @@ ImageView friendPhoto;
         startActivity(new Intent(FriendsFinder.this, Friends.class));
         super.onBackPressed();
     }
+
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.

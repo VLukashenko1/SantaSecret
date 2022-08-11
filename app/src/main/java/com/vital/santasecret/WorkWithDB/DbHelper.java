@@ -1,14 +1,17 @@
 package com.vital.santasecret.WorkWithDB;
 
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class DbHelper {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth auth = FirebaseAuth.getInstance();
+
+    private static final DbHelper dbHelper = new DbHelper();
+    public static DbHelper getInstance() {
+        return dbHelper;
+    }
 
     public final CollectionReference USERS_REF = db.collection("Users");
     public CollectionReference BOXES_REF = db.collection("Boxes");

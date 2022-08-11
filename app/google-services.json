@@ -60,6 +60,14 @@
           }
         },
         {
+          "client_id": "95214450988-6qhlebbic4631442isotl22mrc1kekbv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vital.santasecret",
+            "certificate_hash": "57d5a30a750e418d941dca594c02ee80ad19ccb8"
+          }
+        },
+        {
           "client_id": "95214450988-coh1plqvd0i85co0du2j672v1pu4g09s.apps.googleusercontent.com",
           "client_type": 3
         }

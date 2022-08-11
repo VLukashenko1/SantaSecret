@@ -39,9 +39,9 @@ public class MyProfileActivity extends AppCompatActivity {
         displayName = findViewById(R.id.displayNameMyProfileAct);
         userPhoto = findViewById(R.id.userPhotoMyProfileAct);
 
-        setNickNameButton.setOnClickListener(View->{
+        setNickNameButton.setOnClickListener(View -> {
             if (UserHolder.getInstance().getLiveUser().getValue() == null
-                    || UserHolder.getInstance().getLiveUser().getValue().getuId() == null){
+                    || UserHolder.getInstance().getLiveUser().getValue().getuId() == null) {
                 makeText("an error occurred");
                 return;
             }
@@ -53,7 +53,7 @@ public class MyProfileActivity extends AppCompatActivity {
         idTextView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (dbHelper.currentUserID == null){
+                if (dbHelper.currentUserID == null) {
                     return false;
                 }
                 setClipboard(MyProfileActivity.this, dbHelper.currentUserID);
@@ -66,11 +66,10 @@ public class MyProfileActivity extends AppCompatActivity {
 
     }
 
-    private void showCurrentNickName(User user){
-        if (user.getNickName() == null){
+    private void showCurrentNickName(User user) {
+        if (user.getNickName() == null) {
             currentNickName.setText("NickName not set");
-        }
-        else {
+        } else {
             currentNickName.setText("NickName: " + user.getNickName());
         }
         Glide.with(MyProfileActivity.this).load(user.getPhotoUrl()).into(userPhoto);
@@ -78,9 +77,9 @@ public class MyProfileActivity extends AppCompatActivity {
         idTextView.setText("hold your finger here to copy your id");
     }
 
-    private void setNickName(){
-        mViewModel.getResult().observe(this,res -> {
-            if (res.equals(mViewModel.GOOD_RESULT)){
+    private void setNickName() {
+        mViewModel.getResult().observe(this, res -> {
+            if (res.equals(mViewModel.GOOD_RESULT)) {
                 nickNameInput.setHint("");
                 nickNameInput.setText("");
                 makeText(res);
@@ -90,12 +89,12 @@ public class MyProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void makeText(String text){
+    private void makeText(String text) {
         Toast.makeText(MyProfileActivity.this, text, Toast.LENGTH_SHORT).show();
     }
 
     private void setClipboard(Context context, String text) {
-        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
             android.text.ClipboardManager clipboard = (android.text.ClipboardManager)
                     context.getSystemService(Context.CLIPBOARD_SERVICE);
             clipboard.setText(text);

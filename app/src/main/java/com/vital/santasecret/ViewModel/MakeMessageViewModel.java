@@ -13,38 +13,40 @@ import com.vital.santasecret.WorkWithDB.DbHelper;
 import java.util.HashMap;
 
 public class MakeMessageViewModel extends ViewModel {
-    DbHelper dbHelper = new DbHelper();
+    DbHelper dbHelper = DbHelper.getInstance();
 
     String userId, boxId;
 
-    public MakeMessageViewModel(String userId, String boxId){
+    public MakeMessageViewModel(String userId, String boxId) {
         this.userId = userId;
         this.boxId = boxId;
     }
 
     private MutableLiveData<String> currentMessage = new MutableLiveData<>();
+
     public MutableLiveData<String> getCurrentMessage(String boxId, String userId) {
         findMessage(boxId, userId);
         return currentMessage;
     }
-    private void findMessage(String boxId, String userId){
+
+    private void findMessage(String boxId, String userId) {
         dbHelper.BOX_MESSAGE.get().addOnSuccessListener(queryDocumentSnapshots -> {
-             for (DocumentSnapshot doc: queryDocumentSnapshots.getDocuments()) {
-                  if (doc.getId().equals(boxId)){
-                        if (doc.get(userId) != null){
-                            currentMessage.setValue(doc.get(userId).toString());
-                        }
+            for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                if (doc.getId().equals(boxId)) {
+                    if (doc.get(userId) != null) {
+                        currentMessage.setValue(doc.get(userId).toString());
                     }
                 }
-            });
+            }
+        });
     }
 
-    public String pushNewMessage(TextInputEditText input){
-        if (input.getText().toString().isEmpty() || input.getText() == null){
+    public String pushNewMessage(TextInputEditText input) {
+        if (input.getText().toString().isEmpty() || input.getText() == null) {
             return "Fill input";
         }
 
-        HashMap<String, String > forPush = new HashMap<>();
+        HashMap<String, String> forPush = new HashMap<>();
         forPush.put(userId, input.getText().toString());
         dbHelper.BOX_MESSAGE.document(boxId).set(forPush, SetOptions.merge());
 

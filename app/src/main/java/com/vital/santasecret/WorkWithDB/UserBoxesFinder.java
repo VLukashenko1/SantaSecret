@@ -27,34 +27,35 @@ public class UserBoxesFinder {
     DbHelper dbHelper = new DbHelper();
     BoxesHolder boxesHolder = BoxesHolder.getInstance();
 
-    private void findBoxCreatedByUser(){
+    private void findBoxCreatedByUser() {
         dbHelper.BOXES_REF.whereEqualTo("idOfCreator", auth.getCurrentUser().getUid())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error != null){
-                    return;
-                }
-                if (value != null){
-                    List<Box> boxes = new ArrayList<>();
-                    for (DocumentSnapshot document: value.getDocuments()){
-                        Box box = document.toObject(Box.class);
-                        boxes.add(box);
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            return;
+                        }
+                        if (value != null) {
+                            List<Box> boxes = new ArrayList<>();
+                            for (DocumentSnapshot document : value.getDocuments()) {
+                                Box box = document.toObject(Box.class);
+                                boxes.add(box);
+                            }
+                            findBoxWhereUserInclude(boxes);
+                        }
                     }
-                    findBoxWhereUserInclude(boxes);
-                }
-            }
 
-        });
+                });
     }
-    private void findBoxWhereUserInclude(List<Box> boxes){
+
+    private void findBoxWhereUserInclude(List<Box> boxes) {
         dbHelper.BOXES_REF.whereArrayContains("listOfUsers", auth.getCurrentUser().getUid()).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             List<Box> localBoxes = boxes;
-                            for (QueryDocumentSnapshot document: task.getResult()){
+                            for (QueryDocumentSnapshot document : task.getResult()) {
                                 Box box = document.toObject(Box.class);
                                 localBoxes.add(box);
                             }
@@ -64,7 +65,8 @@ public class UserBoxesFinder {
                 });
 
     }
-    public void startBackgroundFindingBox(){
+
+    public void startBackgroundFindingBox() {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {

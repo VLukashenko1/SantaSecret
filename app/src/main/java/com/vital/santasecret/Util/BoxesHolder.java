@@ -9,11 +9,13 @@ import androidx.lifecycle.MutableLiveData;
 
 public class BoxesHolder {
     private static final BoxesHolder holder = new BoxesHolder();
-    public static BoxesHolder getInstance(){
+
+    public static BoxesHolder getInstance() {
         return holder;
     }
 
     private MutableLiveData<List<Box>> boxesLiveData = new MutableLiveData<>();
+
     public MutableLiveData<List<Box>> getLiveBoxes() {
         return boxesLiveData;
     }

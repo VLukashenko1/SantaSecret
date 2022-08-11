@@ -18,11 +18,10 @@ import com.vital.santasecret.R;
 import com.vital.santasecret.Util.BoxHolder;
 import com.vital.santasecret.Util.BoxesHolder;
 import com.vital.santasecret.WorkWithDB.InBoxUsersFinder;
+import com.vital.santasecret.WorkWithDB.InBoxUsersFinderService;
 import com.vital.santasecret.WorkWithDB.UserBoxesFinder;
 import com.vital.santasecret.WorkWithDB.UserChecker;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,18 +31,18 @@ public class MainActivity extends AppCompatActivity {
     ListView boxesListView;
     ImageView threeDots;
 
-    InBoxUsersFinder inBoxUsersFinder = new InBoxUsersFinder();
+    InBoxUsersFinder inBoxUsersFinder = InBoxUsersFinder.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//
-        UserChecker userChecker = new UserChecker();
-        userChecker.userObserver();
-        Log.d(LOG_TAG,"Application started");
-//
+
+        UserChecker userChecker = UserChecker.getInstance();
+        userChecker.observeUser();
+        Log.d(LOG_TAG, "Application started");
+
         createBox = findViewById(R.id.addBoxMain);
         createBox.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, CreateBox.class)));
         friendsButton = findViewById(R.id.friendsMain);
@@ -53,12 +52,13 @@ public class MainActivity extends AppCompatActivity {
         threeDots.setOnClickListener(View -> startActivity(new Intent(MainActivity.this, MyProfileActivity.class)));
 
         boxesFinder();
+
     }
 
 
     void boxesFinder() {
-        UserBoxesFinder ubf = new UserBoxesFinder();
-        ubf.startBackgroundFindingBox();
+        UserBoxesFinder userBoxesFinder = new UserBoxesFinder();
+        userBoxesFinder.startBackgroundFindingBox();
         BoxesHolder.getInstance().getLiveBoxes().observe(this, new Observer<List<Box>>() {
             @Override
             public void onChanged(List<Box> boxes) {
@@ -93,4 +93,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return boxNamesArray;
     }
+
 }

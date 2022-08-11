@@ -22,12 +22,12 @@ import com.vital.santasecret.WorkWithDB.DbHelper;
 import java.util.HashMap;
 
 public class MakeMessageActivity extends AppCompatActivity {
-TextInputEditText input;
-Button pushMessage;
-TextView currentMessage, instruction;
-String boxId, boxName, userId;
+    TextInputEditText input;
+    Button pushMessage;
+    TextView currentMessage, instruction;
+    String boxId, boxName, userId;
 
-private MakeMessageViewModel mViewModel;
+    private MakeMessageViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +53,19 @@ private MakeMessageViewModel mViewModel;
         findCurrentMessage();
     }
 
-    void findCurrentMessage(){
-        mViewModel.getCurrentMessage(boxId,userId).observe(this,currentMessage ->{
+    void findCurrentMessage() {
+        mViewModel.getCurrentMessage(boxId, userId).observe(this, currentMessage -> {
             this.currentMessage.setText("");
             input.setText(currentMessage);
         });
     }
-    void pushNewMessage(){
+
+    void pushNewMessage() {
         makeText(mViewModel.pushNewMessage(input));
         findCurrentMessage();
     }
 
-    void makeText(String text){
+    void makeText(String text) {
         Toast.makeText(MakeMessageActivity.this, text, Toast.LENGTH_SHORT).show();
     }
 

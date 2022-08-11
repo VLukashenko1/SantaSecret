@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndrStud/SantaSecret/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.258" />
+        <entry key="..\:/AndrStud/SantaSecret/app/src/main/res/drawable/ic_launcher_background.xml" value="0.258" />
         <entry key="..\:/AndrStud/SantaSecret/app/src/main/res/layout/activity_create_box.xml" value="0.25416666666666665" />
         <entry key="..\:/AndrStud/SantaSecret/app/src/main/res/layout/activity_find_friends.xml" value="0.25416666666666665" />
         <entry key="..\:/AndrStud/SantaSecret/app/src/main/res/layout/activity_friends.xml" value="0.25416666666666665" />
@@ -10,6 +12,7 @@
         <entry key="..\:/AndrStud/SantaSecret/app/src/main/res/layout/activity_main.xml" value="0.2477355072463768" />
         <entry key="..\:/AndrStud/SantaSecret/app/src/main/res/layout/activity_make_message.xml" value="0.25416666666666665" />
         <entry key="..\:/AndrStud/SantaSecret/app/src/main/res/layout/activity_my_profile.xml" value="0.25416666666666665" />
+        <entry key="..\:/AndrStud/SantaSecret/app/src/main/res/layout/activity_sign_in.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Vital/AndroidStudioProjects/SantaSecret/app/src/main/res/layout/activity_create_box.xml" value="0.264" />
         <entry key="..\:/Users/Vital/AndroidStudioProjects/SantaSecret/app/src/main/res/layout/activity_find_friends.xml" value="0.4" />
         <entry key="..\:/Users/Vital/AndroidStudioProjects/SantaSecret/app/src/main/res/layout/activity_friends.xml" value="0.264" />

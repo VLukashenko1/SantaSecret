@@ -34,7 +34,9 @@ public class CreateBox extends AppCompatActivity {
         backButton.setVisibility(View.INVISIBLE);
 
         boxName = findViewById(R.id.createBoxInput);
+
         radioGroup = findViewById(R.id.radioGroupCreateBoxAct);
+
         createBoxButton = findViewById(R.id.createBoxButtonCreateBoxAct);
         createBoxButton.setOnClickListener(view -> {
             actionChoosing(radioGroup.getCheckedRadioButtonId());
@@ -42,11 +44,12 @@ public class CreateBox extends AppCompatActivity {
 
         boxNameHintSetter();
     }
-    void boxNameHintSetter(){
+
+    void boxNameHintSetter() {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i){
+                switch (i) {
                     case R.id.radioButtonCreateBox:
                         boxName.setHint(getResources().getString(R.string.enter_box_name));
                         break;
@@ -57,32 +60,32 @@ public class CreateBox extends AppCompatActivity {
             }
         });
     }
-    void actionChoosing(int i){
-        switch (i){
-            case R.id.radioButtonCreateBox:
-                 makeText(mViewModel.createBox(boxName.getText().toString()));
-                 changeActivity();
-                 break;
-             case R.id.radioButtonConnectToBox:
-                 if (!boxName.getText().toString().isEmpty()){
-                     mViewModel.getResult().observe(this, result ->{
-                         mViewModel.isBoxExist(boxName.getText().toString());
-                         makeText(result);
-                         changeActivity();
-                     });
-                     return;
-                 }
-                 makeText(getResources().getString(R.string.enter_box_id));
-                 break;
-          }
 
+    void actionChoosing(int i) {
+        switch (i) {
+            case R.id.radioButtonCreateBox:
+                makeText(mViewModel.createBox(boxName.getText().toString()));
+                changeActivity();
+                break;
+            case R.id.radioButtonConnectToBox:
+                if (!boxName.getText().toString().isEmpty()) {
+                    mViewModel.getResult().observe(this, result -> {
+                        mViewModel.isBoxExist(boxName.getText().toString());
+                        makeText(result);
+                        changeActivity();
+                    });
+                    return;
+                }
+                makeText(getResources().getString(R.string.enter_box_id));
+                break;
+        }
 
     }
 
-    void makeText(String text){
+    void makeText(String text) {
         Toast.makeText(CreateBox.this, text, Toast.LENGTH_SHORT).show();
     }
-    void changeActivity(){
+    void changeActivity() {
         startActivity(new Intent(this, MainActivity.class));
     }
 }

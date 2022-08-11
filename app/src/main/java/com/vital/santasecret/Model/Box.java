@@ -3,6 +3,7 @@ package com.vital.santasecret.Model;
 import java.util.List;
 
 public class Box {
+
     String idOfBox;
     String idOfCreator, NameOfBox;
     List<String> listOfUsers;
@@ -13,7 +14,9 @@ public class Box {
         this.NameOfBox = nameOfBox;
         this.listOfUsers = listOfUsers;
     }
-    public Box(){}
+
+    public Box() {
+    }
 
     public String getIdOfCreator() {
         return idOfCreator;

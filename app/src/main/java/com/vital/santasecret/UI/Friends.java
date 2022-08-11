@@ -2,6 +2,7 @@ package com.vital.santasecret.UI;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,20 +39,24 @@ public class Friends extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends);
 
+        mViewModel = new ViewModelProvider(this).get(FriendsViewModel.class);
+
         friendsCounter = findViewById(R.id.friendsCounter);
         ellipseFriends = findViewById(R.id.elipseFriends);
 
         addFriendsButton = findViewById(R.id.addFriendsButtonFriendsAct);
-        addFriendsButton.setOnClickListener(View ->  startActivity(new Intent(Friends.this, FriendsFinder.class)));
+        addFriendsButton.setOnClickListener(View -> startActivity(new Intent(Friends.this, FriendsFinder.class)));
 
         frList = findViewById(R.id.listViewFriendsAct);
 
         UserHolder.getInstance().getLiveUser().observe(this, user -> {
-            mViewModel = new FriendsViewModel(user);
+            if (user != null){
+                mViewModel.setUser(user);
+                System.out.println("User transfer to view model");
+            }
             //FriendsList
-            mViewModel.getFriendNames();
-            mViewModel.getFriendNamesList().observe(this,friendNames -> {
-                frList.setAdapter(new ArrayAdapter<String>(Friends.this, android.R.layout.simple_list_item_1,friendNames));
+            mViewModel.getFriendNamesList().observe(this, friendNames -> {
+                frList.setAdapter(new ArrayAdapter<String>(Friends.this, android.R.layout.simple_list_item_1, friendNames));
                 registerForContextMenu(frList);
             });
             //RequestsList
@@ -62,8 +67,8 @@ public class Friends extends AppCompatActivity {
         addUserToBox();
     }
 
-    void showFriendsRequest(User user){
-        if (user.getRequestToFriends() == null || user.getRequestToFriends().size() == 0){
+    void showFriendsRequest(User user) {
+        if (user.getRequestToFriends() == null || user.getRequestToFriends().size() == 0) {
             return;
         }
         friendsCounter.setVisibility(View.VISIBLE);
@@ -73,9 +78,10 @@ public class Friends extends AppCompatActivity {
         ellipseFriends.setOnClickListener(view -> mViewModel.getRequestNames());
         fillRequestsList();
     }
-    void fillRequestsList(){
+
+    void fillRequestsList() {
         FriendsMover friendsMover = new FriendsMover();
-        mViewModel.friendRequestNamesList().observe(this,names -> {
+        mViewModel.friendRequestNamesList().observe(this, names -> {
             frList.setAdapter(new ArrayAdapter<String>(Friends.this, android.R.layout.simple_list_item_1, names));
 
             frList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -86,10 +92,10 @@ public class Friends extends AppCompatActivity {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Friends.this);
                     alertDialogBuilder.setTitle(getResources().getString(R.string.choose_an_action));
                     alertDialogBuilder.setMessage(getResources().getString(R.string.add_to_friends_ask)).setCancelable(true)
-                            .setPositiveButton(getResources().getString(R.string.yes),(dialogInterface, i1) -> {
+                            .setPositiveButton(getResources().getString(R.string.yes), (dialogInterface, i1) -> {
                                 friendsMover.addToFriends(dbHelper.currentUserID, friendId);
                             }).setNegativeButton(getResources().getString(R.string.no), (dialogInterface, i12) ->
-                                    friendsMover.dellUserFromFriendsRequest(dbHelper.currentUserID,friendId));
+                                    friendsMover.dellUserFromFriendsRequest(dbHelper.currentUserID, friendId));
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
                 }
@@ -97,10 +103,10 @@ public class Friends extends AppCompatActivity {
         });
     }
 
-    void addUserToBox(){
-        if (getIntent().getBooleanExtra("IsFromInBoxActivity", false)){
+    void addUserToBox() {
+        if (getIntent().getBooleanExtra("IsFromInBoxActivity", false)) {
             String idOfBox = getIntent().getStringExtra("IdOfBox");
-            if (idOfBox == null){
+            if (idOfBox == null) {
                 startActivity(new Intent(Friends.this, MainActivity.class));
                 return;
             }
@@ -109,7 +115,7 @@ public class Friends extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     mViewModel.addUserToBox(idOfBox, i);
 
-                    Toast.makeText(Friends.this,getResources().getString(R.string.you_added_friend_to_box),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Friends.this, getResources().getString(R.string.you_added_friend_to_box), Toast.LENGTH_SHORT).show();
 
                     InBoxUsersFinder inBoxUsersFinder = new InBoxUsersFinder();
                     inBoxUsersFinder.getListWithIdOfUsers(idOfBox);

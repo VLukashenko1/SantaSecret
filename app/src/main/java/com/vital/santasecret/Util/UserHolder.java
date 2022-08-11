@@ -12,6 +12,7 @@ public class UserHolder {
     }
 
     private MutableLiveData<User> userLiveData = new MutableLiveData<>();
+
     public MutableLiveData<User> getLiveUser() {
         return userLiveData;
     }

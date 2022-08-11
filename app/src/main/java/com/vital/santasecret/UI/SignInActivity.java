@@ -31,6 +31,7 @@ public class SignInActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +54,7 @@ public class SignInActivity extends AppCompatActivity {
         });
 
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -92,7 +94,7 @@ public class SignInActivity extends AppCompatActivity {
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(SignInActivity.this, "Authorized failed",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignInActivity.this, "Authorized failed", Toast.LENGTH_SHORT).show();
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             return;
                         }
@@ -107,7 +109,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser user) {
-        if (user != null){
+        if (user != null) {
             // Make folder with userData in FirebaseFirestore
             UserChecker userChecker = new UserChecker();
             userChecker.isUserRegister();
@@ -115,8 +117,7 @@ public class SignInActivity extends AppCompatActivity {
             // show message and change activity
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-        }
-        else {
+        } else {
             return;
         }
     }

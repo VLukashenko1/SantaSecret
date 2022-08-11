@@ -44,12 +44,13 @@ public class InBoxActivity extends AppCompatActivity {
 
         //ViewModel
         mViewModel = ViewModelProviders.of(this).get(InBoxViewModel.class);
-        //
+        mViewModel.sendContext(getApplicationContext());
 
         threeDots = findViewById(R.id.threeDotsButtonInBoxAct);
         nameOfBox = findViewById(R.id.nameOfBoxInBoxAct);
         size = findViewById(R.id.counterOfParicipantsInBoxAct);
         drawResult = findViewById(R.id.drawResultTextView);
+
         addUserToBox = findViewById(R.id.addUserToBoxInBoxAct);
         addUserToBox.setOnClickListener(view -> BoxHolder.getInstance().getLiveBox().observe(InBoxActivity.this, this::addUserToBox));
 

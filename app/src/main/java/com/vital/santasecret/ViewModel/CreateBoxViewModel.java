@@ -18,15 +18,15 @@ import com.vital.santasecret.WorkWithDB.DbHelper;
 import java.util.HashMap;
 
 public class CreateBoxViewModel extends ViewModel {
-    DbHelper dbHelper = new DbHelper();
+    DbHelper dbHelper = DbHelper.getInstance();
     Context context;
 
-    public CreateBoxViewModel(Context context){
+    public CreateBoxViewModel(Context context) {
         this.context = context;
     }
 
-    public String createBox(String name){
-        if (name.isEmpty()){
+    public String createBox(String name) {
+        if (name.isEmpty()) {
             return context.getResources().getString(R.string.enter_box_name);
         }
         Box box = new Box(dbHelper.currentUserID, name, null, null);
@@ -39,16 +39,17 @@ public class CreateBoxViewModel extends ViewModel {
     }
 
     MutableLiveData<String> result = new MutableLiveData<>();
-    public MutableLiveData<String> getResult(){
+
+    public MutableLiveData<String> getResult() {
         return result;
     }
 
-    public void isBoxExist(String idOfBox){
+    public void isBoxExist(String idOfBox) {
         dbHelper.BOXES_REF.document(idOfBox).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.getData() != null){
-                    if (!documentSnapshot.get(DbHelper.ID_OF_BOX_CREATOR).toString().equals(dbHelper.currentUserID)){
+                if (documentSnapshot.getData() != null) {
+                    if (!documentSnapshot.get(DbHelper.ID_OF_BOX_CREATOR).toString().equals(dbHelper.currentUserID)) {
                         connectToBox(idOfBox);
                     }
                     result.setValue(context.getResources().getString(R.string.box_created_by_yourself));
@@ -63,7 +64,8 @@ public class CreateBoxViewModel extends ViewModel {
             }
         });
     }
-    void connectToBox(String idOfBox){
+
+    void connectToBox(String idOfBox) {
         dbHelper.BOXES_REF.document(idOfBox).update("listOfUsers", FieldValue
                 .arrayUnion(dbHelper.currentUserID));
         result.setValue(context.getResources().getString(R.string.you_connect_to_box_success));

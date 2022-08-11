@@ -40,6 +40,7 @@
     <string name="no_message_yet">\" no message yet\"</string>
     <string name="you_don_t_create_message_yet">You don\'t create message yet</string>
     <string name="copied">copied</string>
+    <string name="cantStart">Sorry, you can\'t start yet</string>
     //
 
 </resources>

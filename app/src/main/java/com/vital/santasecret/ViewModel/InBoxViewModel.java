@@ -1,5 +1,7 @@
 package com.vital.santasecret.ViewModel;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -16,10 +18,17 @@ import java.util.HashMap;
 import java.util.List;
 
 public class InBoxViewModel extends ViewModel {
-    DbHelper dbHelper = new DbHelper();
+
+   Context context;
+    public void sendContext(Context context1){
+       context = context1;
+   }
+
+    DbHelper dbHelper = DbHelper.getInstance();
 
     private MutableLiveData<String> drawResult = new MutableLiveData<>();
-    public LiveData<String> getDrawResult(Box box){
+
+    public LiveData<String> getDrawResult(Box box) {
         isDrawComplete(box);
         return drawResult;
     }
@@ -30,13 +39,13 @@ public class InBoxViewModel extends ViewModel {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.getData() != null) {
                     findMessage(documentSnapshot.get(dbHelper.currentUserID).toString(), box);
-                }
-                else {
+                } else {
                     return;
                 }
             }
         });
     }
+
     private void findMessage(String forWho, Box box) {
         dbHelper.BOX_MESSAGE.document(box.getIdOfBox()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -49,6 +58,7 @@ public class InBoxViewModel extends ViewModel {
             }
         });
     }
+
     private void findName(String forWho, String msg) {
         dbHelper.USERS_REF.document(forWho).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -57,12 +67,13 @@ public class InBoxViewModel extends ViewModel {
             }
         });
     }
+
     private void showDrawResult(String forWho, String msg) {
         if (forWho == null) {
             return;
         }
         if (msg == null || msg.isEmpty()) {
-            drawResult.setValue("You should prepare for " + forWho + ", but he not leave message yet");
+            drawResult.setValue("You should prepare for " + forWho + ", but he do not leave message yet");
         } else {
             drawResult.setValue("You should prepare for " + forWho + "Message for you: " + msg);
         }
@@ -70,15 +81,20 @@ public class InBoxViewModel extends ViewModel {
 
     public String shake(Box box) {
         if (box.getListOfUsers() == null) {
-            return "Sorry, you can't start yet";
+            return context.getString(R.string.cantStart);
         }
         List<String> tempForShake = new ArrayList<>();
-        HashMap<String, String> forPush = new HashMap<>();
         tempForShake.add(box.getIdOfCreator());
-        for (int i = 0; i < box.getListOfUsers().size() - 1; i++) {
-            forPush.put(tempForShake.get(i), tempForShake.get(tempForShake.size() - i - 1));
-            forPush.put(tempForShake.get(tempForShake.size() - i - 1), tempForShake.get(i));
+        for (int i = 0; i < box.getListOfUsers().size(); i++) {
+            tempForShake.add(box.getListOfUsers().get(i));
         }
+
+        HashMap<String, String> forPush = new HashMap<>();
+        for (int i = 0; i < tempForShake.size()-1; i++) {
+            forPush.put(tempForShake.get(i), tempForShake.get(i+1));
+        }
+        forPush.put(tempForShake.get(tempForShake.size()-1), tempForShake.get(0));
+
         dbHelper.BOX_RESULT.document(box.getIdOfBox()).set(forPush, SetOptions.merge());
         return "SUCCESS";
     }
